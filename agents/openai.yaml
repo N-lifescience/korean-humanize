@@ -1,0 +1,6 @@
+interface:
+  display_name: "한국어 윤문과 가독성"
+  short_description: "한국어 윤문, 띄어쓰기와 줄바꿈, 웹앱 화면 가독성을 함께 다듬습니다."
+  default_prompt: "$korean-humanize를 사용해 이 한국어 글이나 웹앱의 문구를 자연스럽게 다듬고 필요한 줄바꿈과 화면 가독성까지 확인해줘."
+policy:
+  allow_implicit_invocation: true
