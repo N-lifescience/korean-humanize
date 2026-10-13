@@ -22,6 +22,7 @@ SKILL_ROOT="$(cd -P "<korean-humanize/SKILL.md가 있는 실제 디렉터리>" &
 ```
 
 2. `${SKILL_ROOT}/references/quick-rules.md`를 읽는다. standard/heavy에서는 `diagnosis-rules.md`도 읽게 한다.
+   군더더기나 습관적인 표현을 다듬을 때는 [간결한 문장 검토](concise-korean.md)도 읽고, 해당 K-ID와 문맥 근거를 수동 진단에 사용한다. 진행상, 가능성, 복수 범위와 논리 관계의 보존을 모든 간결화 처방에 우선한다.
 3. 사용자 입력을 cwd의 `_workspace/YYYY-MM-DD-NNN-TAG/01_input.txt`에 저장한다. 당일 표지 파일을 검색해 다음 NNN을 선택하고, run 시작 때 `python3 -c "import secrets;print(secrets.token_hex(2))"`로 TAG를 한 번 생성해 끝까지 재사용한다. 동시 세션이 같은 NNN을 선택해도 원문을 덮어쓰지 않게 한다.
 4. 첫 300자로 장르를 추정한다. 사용자 지정이 우선이다. 실행 키는 칼럼=`column`, 리포트=`report`, 블로그=`blog`, 공적·기타=`essay`, 학술 초록=`abstract`다.
 5. 다음을 실행한다. 스크립트는 항상 `${SKILL_ROOT}/scripts/...` 절대경로로 부르고, 데이터 경로는 cwd 기준으로 유지한다. 경로에 공백이 있을 수 있으므로 인자를 따옴표로 감싼다.
@@ -31,7 +32,7 @@ python3 "${SKILL_ROOT}/scripts/prepare_monolith_input.py" --run-dir "$RUN_DIR" -
 ```
 
 6. `00_metrics.json`의 `route_hint`를 읽는다. `--strict`, `정밀 모드`, `정밀하게`, `제대로`는 heavy로, `가볍게`, `빠르게만`은 light로 덮어쓴다. 힌트가 없으면 standard다.
-7. 사용자에게 `korean-humanize 1.0.0 — 윤문 경로: ROUTE (SOURCE) / run_id: RUN_ID` 한 줄을 알리고 계속 작업한다.
+7. 사용자에게 `korean-humanize 1.1.0 — 윤문 경로: ROUTE (SOURCE) / run_id: RUN_ID` 한 줄을 알리고 계속 작업한다.
 
 ## 역할 실행 계약
 
@@ -92,6 +93,7 @@ python3 "${SKILL_ROOT}/scripts/verify_gates.py" --before "$RUN_DIR/01_input.txt"
 - exit 2: 결과 채택 금지. 안전본으로 되돌리고 monolith를 보수적으로 1회 재실행한다. 재차 exit 2면 `hold_and_report`한다.
 - exit 3: 실행 오류로 판정 불가. 결과 채택과 finalizer 승급을 중단하고 오류를 사용자에게 보고한다. 파일·경로를 바로잡은 뒤에만 재시도하며 게이트를 건너뛰지 않는다.
 - 마크업 때문에 변경률이 부풀었다면 `--ignore-markup`으로 교차 측정하되 두 수치를 모두 보고한다.
+- 간결화한 문장은 `concise-korean.md`의 의미 확인도 수행한다. 수치 게이트가 exit 0이어도 진행과 완료, 가능성과 실제 발생, 소유와 복수의 범위, 인과와 대조가 달라진 수정은 되돌린다.
 
 ## 후속 재실행
 
